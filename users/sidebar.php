@@ -33,10 +33,14 @@
     <hr>
     <div class="dropdown">
       <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-        <strong>mdo</strong>
+        <?php
+        $id = $_SESSION['userid'];
+        $userdata = $query->select('users', $id);
+        ?>
+        <strong><?php echo $userdata['username']; ?></strong>
       </a>
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-        <li><a class="dropdown-item" href="#">Sign out</a></li>
+        <li><a class="dropdown-item" href="signout.php">Sign out</a></li>
       </ul>
     </div>
   </div>

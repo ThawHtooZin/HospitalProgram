@@ -1,6 +1,8 @@
 <?php
 include '../Resources/bootstrap.res.php';
+include '../Controller/queries.ctr.php';
 
+$query = new queries();
 $bootstrap = new bootstrap();
 ?>
 <!DOCTYPE html>
@@ -29,7 +31,7 @@ $bootstrap = new bootstrap();
       </div>
       <div class="col-9">
         <div class="container mt-5">
-          <h1>HELLO</h1>
+
         </div>
       </div>
     </div>

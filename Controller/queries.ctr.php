@@ -14,6 +14,16 @@ class queries
     }
   }
 
+  public function book($specialization, $doctor, $date, $time, $user_appointed)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("INSERT INTO appointment(doctor, specialization, date, time, user_appointed) VALUES('$doctor','$specialization', '$date', '$time', '$user_appointed')");
+    $stmt->execute();
+    if($stmt){
+      echo "<script>alert('Booked Successfully!');window.location.href='Index.php';</script>";
+    }
+    }
+
   public function register($username, $password, $email, $phone)
   {
     global $pdo;
@@ -71,18 +81,34 @@ class queries
 
   }
 
-  public function selectall()
+  public function selectall($table)
   {
     global $pdo;
-    $stmt = $pdo->prepare("SELECT * FROM users");
+    $stmt = $pdo->prepare("SELECT * FROM $table");
     $stmt->execute();
     return $stmt->fetchall();
   }
 
-  public function select($id)
+  public function select($table, $id)
   {
     global $pdo;
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE id=$id");
+    $stmt = $pdo->prepare("SELECT * FROM $table WHERE id=$id");
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+
+  public function selectspecdoc($table, $id)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM $table WHERE specialization=$id");
+    $stmt->execute();
+    return $stmt->fetchall();
+  }
+
+  public function selectspec($table, $specialization)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM $table WHERE id=$specialization");
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
@@ -96,13 +122,34 @@ class queries
       header('location:index.php?error=none');
     }
   }
-  public function delete($id)
+
+  public function cancelappointmentuser($table, $id)
   {
     global $pdo;
-    $stmt = $pdo->prepare("DELETE FROM users WHERE id=$id");
+    $stmt = $pdo->prepare("UPDATE appointment SET status=2 WHERE id=$id");
     $stmt->execute();
     if($stmt){
       header('location:index.php?error=none');
+    }
+  }
+
+  public function cancelappointmentadmin($table, $id)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("UPDATE appointment SET status=3 WHERE id=$id");
+    $stmt->execute();
+    if($stmt){
+      header('location:index.php?error=none');
+    }
+  }
+
+  public function delete($table, $id)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("DELETE FROM $table WHERE id=$id");
+    $stmt->execute();
+    if($stmt){
+      echo "<script>alert('Canceled the Appointment!');window.location.href='Index.php';</script>";
     }
   }
 }
