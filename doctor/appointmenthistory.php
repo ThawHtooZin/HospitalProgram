@@ -35,12 +35,12 @@ $bootstrap = new bootstrap();
       </div>
       <div class="col-9">
         <div class="container mt-5">
-          <h3>User | Appointment History</h3>
+          <h3>Doctor | Appointment History</h3>
           <div class="container" style="margin-top:100px;">
             <table class="table table-stripe table-bordered table-hover">
               <tr>
                 <th>Id</th>
-                <th>Doctor Name</th>
+                <th>Patient Name</th>
                 <th>Doctor Specialization</th>
                 <th>Treatment Fee</th>
                 <th>Appointment Date & Time</th>
@@ -52,17 +52,19 @@ $bootstrap = new bootstrap();
                 <?php
                 foreach ($datas as $data) {
                 $docid = $data['doctor'];
+                $docid = $data['user_appointed'];
+                $patientname = $query->select('users', $docid);
                 $docname = $query->select('doctors', $docid);
                 $specid = $data['specialization'];
                 $docspec = $query->select('specialization', $specid);
                 ?>
                 <td><?php echo $data['id']; ?></td>
-                <td>Dr. <?php echo $docname['name']; ?></td>
+                <td><?php echo $patientname['username']; ?></td>
                 <td><?php echo $docspec['specialization']; ?></td>
                 <td><?php echo $docname['fees']; ?>ks</td>
                 <td><?php echo $data['date'] . " / " . $data['time'];?></td>
                 <td><?php echo $data['create_date']; ?></td>
-                <td><?php if($data['status'] == 1){ echo "Active"; }elseif($data['status'] == 2){ echo "Canceled by Me";}else{ echo "Canceled by Doctor";} ?></td>
+                <td><?php if($data['status'] == 1){ echo "Active"; }elseif($data['status'] == 3){ echo "Canceled by Me";}else{ echo "Canceled by Patient";} ?></td>
                 <td><button type="button" onclick="return confirm('Are you sure to cancel the appointment?') " class="btn btn-warning" <?php if($data['status'] != 1){echo "disabled";} ?>><a href="cancelappointment.php?id=<?php echo $data['id']; ?>" style="text-decoration:none; color:white;">Cancel</a></button></td>
                 <?php
                 }

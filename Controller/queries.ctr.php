@@ -13,6 +13,15 @@ class queries
       header('location:Index.php?error=none');
     }
   }
+  public function addpatient($name, $phone, $email, $gender, $address, $age, $medicalhistory)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("INSERT INTO patients(name, phone, email, gender, address, age, medical_history) VALUES('$name', '$phone', '$email', '$gender', '$address', '$age', '$medicalhistory')");
+    $stmt->execute();
+    if($stmt){
+      echo "<script>alert('Patient Added Successfully!'); window.location.href='Index.php'</script>";
+    }
+  }
 
   public function book($specialization, $doctor, $date, $time, $user_appointed)
   {
@@ -41,12 +50,16 @@ class queries
         $stmt = $pdo->prepare("SELECT * FROM admins WHERE email='$email'");
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
+      if(!empty($data)){
         if($data['password'] == $password){
-        echo "<script>alert('Login Success!'); window.location.href='admin/'</script>";
-        $id = $data['id'];
-        $_SESSION['userid'] = $id;
-        $_SESSION['logged_in'] = true;
-        $_SESSION['role'] = $role;
+          echo "<script>alert('Login Success!'); window.location.href='admin/'</script>";
+          $id = $data['id'];
+          $_SESSION['userid'] = $id;
+          $_SESSION['logged_in'] = true;
+          $_SESSION['role'] = $role;
+        }else{
+          echo "<script>alert('Login Failed! Please Retry');</script>";
+        }
       }else{
         echo "<script>alert('Login Failed! Please Retry');</script>";
       }
@@ -55,11 +68,15 @@ class queries
         $stmt = $pdo->prepare("SELECT * FROM users WHERE email='$email'");
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
+      if(!empty($data)){
         if($data['password'] == $password){
-        echo "<script>alert('Login Success!'); window.location.href='users/'</script>";
-        $id = $data['id'];
-        $_SESSION['userid'] = $id;
-        $_SESSION['logged_in'] = true;
+          echo "<script>alert('Login Success!'); window.location.href='users/'</script>";
+          $id = $data['id'];
+          $_SESSION['userid'] = $id;
+          $_SESSION['logged_in'] = true;
+        }else{
+          echo "<script>alert('Login Failed! Please Retry');</script>";
+        }
       }else{
         echo "<script>alert('Login Failed! Please Retry');</script>";
       }
@@ -68,12 +85,16 @@ class queries
         $stmt = $pdo->prepare("SELECT * FROM doctors WHERE email='$email'");
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
+      if(!empty($data)){
         if($data['password'] == $password){
-        echo "<script>alert('Login Success!'); window.location.href='doctor/'</script>";
-        $id = $data['id'];
-        $_SESSION['userid'] = $id;
-        $_SESSION['logged_in'] = true;
-        $_SESSION['role'] = $role;
+          echo "<script>alert('Login Success!'); window.location.href='doctor/'</script>";
+          $id = $data['id'];
+          $_SESSION['userid'] = $id;
+          $_SESSION['logged_in'] = true;
+          $_SESSION['role'] = $role;
+        }else{
+          echo "<script>alert('Login Failed! Please Retry');</script>";
+        }
       }else{
         echo "<script>alert('Login Failed! Please Retry');</script>";
       }
