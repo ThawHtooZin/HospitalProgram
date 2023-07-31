@@ -48,9 +48,10 @@ $query = new queries();
       $doctor = $_SESSION['doctor'];
       $date = $_POST['date'];
       $time = $_POST['time'];
+      $status = 1;
       $user_appointed = $_SESSION['userid'];
 
-      $query->book($specialization, $doctor, $date, $time, $user_appointed);
+      $query->book($specialization, $doctor, $date, $time, $user_appointed, $status);
     }
   }
 

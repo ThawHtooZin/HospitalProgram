@@ -13,20 +13,20 @@ class queries
       header('location:Index.php?error=none');
     }
   }
-  public function addpatient($name, $phone, $email, $gender, $address, $age, $medicalhistory)
+  public function addpatient($name, $phone, $email, $gender, $address, $age, $medicalhistory, $docid)
   {
     global $pdo;
-    $stmt = $pdo->prepare("INSERT INTO patients(name, phone, email, gender, address, age, medical_history) VALUES('$name', '$phone', '$email', '$gender', '$address', '$age', '$medicalhistory')");
+    $stmt = $pdo->prepare("INSERT INTO patients(name, phone, email, gender, address, age, medical_history, doctor_id) VALUES('$name', '$phone', '$email', '$gender', '$address', '$age', '$medicalhistory', '$docid')");
     $stmt->execute();
     if($stmt){
       echo "<script>alert('Patient Added Successfully!'); window.location.href='Index.php'</script>";
     }
   }
 
-  public function book($specialization, $doctor, $date, $time, $user_appointed)
+  public function book($specialization, $doctor, $date, $time, $user_appointed, $status)
   {
     global $pdo;
-    $stmt = $pdo->prepare("INSERT INTO appointment(doctor, specialization, date, time, user_appointed) VALUES('$doctor','$specialization', '$date', '$time', '$user_appointed')");
+    $stmt = $pdo->prepare("INSERT INTO appointment(doctor, specialization, date, time, user_appointed, status) VALUES('$doctor','$specialization', '$date', '$time', '$user_appointed', '$status')");
     $stmt->execute();
     if($stmt){
       echo "<script>alert('Booked Successfully!');window.location.href='Index.php';</script>";
@@ -162,6 +162,14 @@ class queries
     if($stmt){
       header('location:index.php?error=none');
     }
+  }
+
+  public function updatepatient($name, $phone, $address, $age, $medicalhistory, $date, $id)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("UPDATE patients SET name='$name', phone='$phone', address='$address', age='$age', medical_history='$medicalhistory', updateDate='$date' WHERE id=$id");
+    $stmt->execute();
+    echo "<script>alert('Updated Patient Successfully!'); window,location.href='index.php'</script>";
   }
 
   public function delete($table, $id)

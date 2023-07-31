@@ -48,9 +48,8 @@ $bootstrap = new bootstrap();
                 <th>Current Status</th>
                 <th>Action</th>
               </tr>
-              <tr>
-                <?php
-                foreach ($datas as $data) {
+              <?php
+              foreach ($datas as $data) {
                 $docid = $data['doctor'];
                 $docid = $data['user_appointed'];
                 $patientname = $query->select('users', $docid);
@@ -58,6 +57,7 @@ $bootstrap = new bootstrap();
                 $specid = $data['specialization'];
                 $docspec = $query->select('specialization', $specid);
                 ?>
+              <tr>
                 <td><?php echo $data['id']; ?></td>
                 <td><?php echo $patientname['username']; ?></td>
                 <td><?php echo $docspec['specialization']; ?></td>
@@ -66,10 +66,10 @@ $bootstrap = new bootstrap();
                 <td><?php echo $data['create_date']; ?></td>
                 <td><?php if($data['status'] == 1){ echo "Active"; }elseif($data['status'] == 3){ echo "Canceled by Me";}else{ echo "Canceled by Patient";} ?></td>
                 <td><button type="button" onclick="return confirm('Are you sure to cancel the appointment?') " class="btn btn-warning" <?php if($data['status'] != 1){echo "disabled";} ?>><a href="cancelappointment.php?id=<?php echo $data['id']; ?>" style="text-decoration:none; color:white;">Cancel</a></button></td>
-                <?php
-                }
-                ?>
               </tr>
+              <?php
+            }
+            ?>
             </table>
           </div>
         </div>

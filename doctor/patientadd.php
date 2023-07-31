@@ -59,7 +59,8 @@ $bootstrap = new bootstrap();
         $address = $_POST['address'];
         $age = $_POST['age'];
         $medicalhistory = $_POST['medicalhistory'];
-        $query->addpatient($name, $phone, $email, $gender, $address, $age, $medicalhistory);
+        $docid = $_SESSION['userid'];
+        $query->addpatient($name, $phone, $email, $gender, $address, $age, $medicalhistory, $docid);
       }
     }
     ?>

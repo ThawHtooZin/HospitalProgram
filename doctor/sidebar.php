@@ -25,7 +25,7 @@
         <div class="collapse" id="home-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-2 ms-5">
             <li class="p-1 patientadd"><a href="patientadd.php" class="link-light rounded">Add Patients</a></li>
-            <li class="p-1"><a href="patientmanage.php" class="link-light rounded">Manage Patients</a></li>
+            <li class="p-1 patientmanage"><a href="patientmanage.php" class="link-light rounded">Manage Patients</a></li>
           </ul>
         </div>
       </li>
