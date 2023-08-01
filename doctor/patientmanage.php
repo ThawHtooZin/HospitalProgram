@@ -64,7 +64,7 @@ $bootstrap = new bootstrap();
                 <td>
                   <a href="editpatient.php?patientid=<?php echo $patientdata['id']; ?>" class="btn btn-primary">Edit</a>
                   |
-                  <a href="parientinfo.php?patientid=<?php echo $patientdata['id']; ?>" class="btn btn-primary">Info</a>
+                  <a href="patientinfo.php?patientid=<?php echo $patientdata['id']; ?>" class="btn btn-primary">Info</a>
                 </td>
               </tr>
               <?php

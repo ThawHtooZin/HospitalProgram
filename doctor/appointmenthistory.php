@@ -1,7 +1,11 @@
 <?php
 include '../Resources/bootstrap.res.php';
 include '../Controller/queries.ctr.php';
+include '../Controller/position.auth.php';
 
+$auth = new authrization();
+$role = $_SESSION['role'];
+$auth->checkdoctor($role);
 $query = new queries();
 $bootstrap = new bootstrap();
 ?>
@@ -51,8 +55,8 @@ $bootstrap = new bootstrap();
               <?php
               foreach ($datas as $data) {
                 $docid = $data['doctor'];
-                $docid = $data['user_appointed'];
-                $patientname = $query->select('users', $docid);
+                $userid = $data['user_appointed'];
+                $patientname = $query->select('users', $userid);
                 $docname = $query->select('doctors', $docid);
                 $specid = $data['specialization'];
                 $docspec = $query->select('specialization', $specid);

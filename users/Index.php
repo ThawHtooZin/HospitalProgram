@@ -1,7 +1,12 @@
 <?php
 include '../Resources/bootstrap.res.php';
 include '../Controller/queries.ctr.php';
+include '../Controller/position.auth.php';
 
+$auth = new authrization();
+$userid = $_SESSION['userid'];
+$logged_in = $_SESSION['logged_in'];
+$auth->check($userid, $logged_in);
 $query = new queries();
 $bootstrap = new bootstrap();
 ?>

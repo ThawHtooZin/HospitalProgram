@@ -29,12 +29,6 @@
           </ul>
         </div>
       </li>
-      <li>
-        <a href="/HospitalProgram/doctor/medicalhistory.php" class="nav-link text-white medicalhistory">
-          <svg class="bi me-2" width="16" height="16"><i class="bi bi-heart-pulse"></i></svg>
-          Medical History
-        </a>
-      </li>
     </ul>
     <hr>
     <div class="dropdown">

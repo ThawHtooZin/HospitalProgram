@@ -22,6 +22,15 @@ class queries
       echo "<script>alert('Patient Added Successfully!'); window.location.href='Index.php'</script>";
     }
   }
+  public function addpatientmedicalhistory($bp, $bs, $weight, $bodytemperature, $prescription, $docid, $patientid)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("INSERT INTO medical_history(patient_id, bp, bs, weight, body_temprature, prescription, doctor_id) VALUES('$patientid', '$bp', '$bs', '$weight', '$bodytemperature', '$prescription', '$docid')");
+    $stmt->execute();
+    if($stmt){
+      echo "<script>alert('Patient Medical History Added Successfully!'); window.location.href='Index.php?error=none'</script>";
+    }
+  }
 
   public function book($specialization, $doctor, $date, $time, $user_appointed, $status)
   {
@@ -36,7 +45,7 @@ class queries
   public function register($username, $password, $email, $phone)
   {
     global $pdo;
-    $stmt = $pdo->prepare("INSERT INTO users(username, email, password, phone, role) VALUES('$username', '$email', '$password', '$phone', 1)");
+    $stmt = $pdo->prepare("INSERT INTO users(username, email, password, phone) VALUES('$username', '$email', '$password', '$phone')");
     $stmt->execute();
     if($stmt){
       echo "<script>alert('Register Success! Please Login now');window.location.href='UserLogin.php?error=none';</script>";
@@ -106,6 +115,22 @@ class queries
   {
     global $pdo;
     $stmt = $pdo->prepare("SELECT * FROM $table");
+    $stmt->execute();
+    return $stmt->fetchall();
+  }
+
+  public function selectallmedichistory($table, $patientid)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM $table WHERE patient_id=$patientid");
+    $stmt->execute();
+    return $stmt->fetchall();
+  }
+
+  public function selectallwithuserappointed($table, $id)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM $table WHERE user_appointed=$id");
     $stmt->execute();
     return $stmt->fetchall();
   }

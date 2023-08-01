@@ -1,7 +1,11 @@
 <?php
 include '../Resources/bootstrap.res.php';
 include '../Controller/queries.ctr.php';
+include '../Controller/position.auth.php';
 
+$auth = new authrization();
+$role = $_SESSION['role'];
+$auth->checkdoctor($role);
 $query = new queries();
 $bootstrap = new bootstrap();
 ?>

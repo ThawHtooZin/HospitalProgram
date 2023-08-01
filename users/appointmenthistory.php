@@ -1,7 +1,12 @@
 <?php
 include '../Resources/bootstrap.res.php';
 include '../Controller/queries.ctr.php';
+include '../Controller/position.auth.php';
 
+$auth = new authrization();
+$userid = $_SESSION['userid'];
+$logged_in = $_SESSION['logged_in'];
+$auth->check($userid, $logged_in);
 $query = new queries();
 $bootstrap = new bootstrap();
 ?>
@@ -25,7 +30,8 @@ $bootstrap = new bootstrap();
   ?>
   <body>
     <?php
-    $datas = $query->selectall('appointment');
+    $id = $_SESSION['userid'];
+    $datas = $query->selectallwithuserappointed('appointment', $id);
     ?>
     <div class="row" style="margin: 0px !important; margin-left: -12px !important;">
       <div class="col-3">
