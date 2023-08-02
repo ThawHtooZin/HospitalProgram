@@ -13,6 +13,17 @@ class queries
       header('location:Index.php?error=none');
     }
   }
+
+  public function addspecial($specialization)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("INSERT INTO specialization(specialization) VALUES('$specialization')");
+    $stmt->execute();
+    if($stmt){
+      echo "<script>alert('Specialization Added Successfully!'); window.location.href='Index.php'</script>";
+    }
+  }
+
   public function addpatient($name, $phone, $email, $gender, $address, $age, $medicalhistory, $docid)
   {
     global $pdo;
@@ -22,6 +33,17 @@ class queries
       echo "<script>alert('Patient Added Successfully!'); window.location.href='Index.php'</script>";
     }
   }
+
+  public function doctoradd($special, $name, $address, $fee, $phone, $email, $password)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("INSERT INTO doctors(specialization, name, address, fees, contactno, email, password) VALUES('$special', '$name', '$address', '$fee', '$phone', '$email', '$password')");
+    $stmt->execute();
+    if($stmt){
+      echo "<script>alert('Doctor Added Successfully!'); window.location.href='Index.php'</script>";
+    }
+  }
+
   public function addpatientmedicalhistory($bp, $bs, $weight, $bodytemperature, $prescription, $docid, $patientid)
   {
     global $pdo;
@@ -197,13 +219,21 @@ class queries
     echo "<script>alert('Updated Patient Successfully!'); window,location.href='index.php'</script>";
   }
 
+  public function updatespec($specialization, $id)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("UPDATE specialization SET specialization='$specialization' WHERE id=$id");
+    $stmt->execute();
+    echo "<script>alert('Updated Patient Successfully!'); window,location.href='index.php'</script>";
+  }
+
   public function delete($table, $id)
   {
     global $pdo;
     $stmt = $pdo->prepare("DELETE FROM $table WHERE id=$id");
     $stmt->execute();
     if($stmt){
-      echo "<script>alert('Canceled the Appointment!');window.location.href='Index.php';</script>";
+      echo "<script>alert('Deleted the data!');window.location.href='Index.php';</script>";
     }
   }
 }

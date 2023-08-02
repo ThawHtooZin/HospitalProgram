@@ -17,8 +17,10 @@ $bootstrap = new bootstrap();
   </head>
   <style media="screen">
     .home{
-      background-color: #0275d8 !important;
       color: white !important;
+    }
+    .doctor{
+      background-color: #0275d8 !important;
     }
   </style>
   <?php
@@ -26,7 +28,16 @@ $bootstrap = new bootstrap();
   $bootstrap->inconlink();
   ?>
   <body>
-
+    <?php
+    if($_POST){
+      if(empty($_POST['specialization'])){
+        $specerror = "The Specialization field is required";
+      }else{
+        $specialization = $_POST['specialization'];
+        $query->addspecial($specialization);
+      }
+    }
+    ?>
     <div class="row" style="margin: 0px !important; margin-left: -12px !important;">
       <div class="col-3">
         <?php
@@ -35,7 +46,16 @@ $bootstrap = new bootstrap();
       </div>
       <div class="col-9">
         <div class="container mt-5">
-
+          <h3>Admin | Doctor Specialization</h3>
+          <div class="" style="margin-top:100px;">
+            <form class="from-control" action="addspecial.php" method="post">
+              <p>Add Specialization</p>
+              <label>Specialization</label>
+              <input type="text" name="specialization" class="form-control">
+              <p class="text-danger"><?php if(!empty($specerror)){ echo $specerror; } ?></p>
+              <button type="submit" class="btn btn-success text-light">Add</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
