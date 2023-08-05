@@ -28,7 +28,8 @@ $bootstrap = new bootstrap();
         $email = $_POST['email'];
         $password = $_POST['password'];
         $role = 2;
-        $query->login($email, $password, $role);
+        $ip = "";
+        $query->login($email, $password, $role, $ip);
       }
     }
     ?>

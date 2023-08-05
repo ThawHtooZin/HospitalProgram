@@ -14,6 +14,16 @@ class queries
     }
   }
 
+  public function addmessage($name, $email, $phone, $message)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("INSERT INTO contact(name, email, phone, message, status) VALUES('$name','$email', '$phone', '$message', '1')");
+    $stmt->execute();
+    if($stmt){
+      echo "<script>alert('Thanks for the Message!!'); window.location.href='Index.php'</script>";
+    }
+  }
+
   public function addspecial($specialization)
   {
     global $pdo;
@@ -74,7 +84,7 @@ class queries
     }
   }
 
-  public function login($email, $password, $role)
+  public function login($email, $password, $role, $ip)
   {
     global $pdo;
       if($role == 2){
@@ -105,10 +115,24 @@ class queries
           $id = $data['id'];
           $_SESSION['userid'] = $id;
           $_SESSION['logged_in'] = true;
+          $getuserdatastmt = $pdo->prepare("SELECT * FROM users WHERE email='$email'");
+          $getuserdatastmt->execute();
+          $userdatas = $getuserdatastmt->fetch(PDO::FETCH_ASSOC);
+          $userid = $userdatas['id'];
+          $userlogstmt = $pdo->prepare("INSERT INTO userslog(user_id, email, ip, status) VALUES('$userid','$email', '$ip', 'Success')");
+          $userlogstmt->execute();
         }else{
+          $getuserdatastmt = $pdo->prepare("SELECT * FROM users WHERE email='$email'");
+          $getuserdatastmt->execute();
+          $userdatas = $getuserdatastmt->fetch(PDO::FETCH_ASSOC);
+          $userid = $userdatas['id'];
+          $userlogstmt = $pdo->prepare("INSERT INTO userslog(user_id, email, ip, status) VALUES('$userid','$email', '$ip', 'Failed')");
+          $userlogstmt->execute();
           echo "<script>alert('Login Failed! Please Retry');</script>";
         }
       }else{
+        $userlogstmt = $pdo->prepare("INSERT INTO userslog(email, ip, status) VALUES('$email', '$ip', 'Failed')");
+        $userlogstmt->execute();
         echo "<script>alert('Login Failed! Please Retry');</script>";
       }
       }
@@ -123,20 +147,56 @@ class queries
           $_SESSION['userid'] = $id;
           $_SESSION['logged_in'] = true;
           $_SESSION['role'] = $role;
+          $doctordatastmt = $pdo->prepare("SELECT * FROM doctors WHERE email='$email'");
+          $doctordatastmt->execute();
+          $doctordatas = $doctordatastmt->fetch(PDO::FETCH_ASSOC);
+          $doctorid = $doctordatas['id'];
+          $doctorlogstmt = $pdo->prepare("INSERT INTO doctorslog(doctor_id, email, ip, status) VALUES('$doctorid','$email', '$ip', 'Success')");
+          $doctorlogstmt->execute();
         }else{
+          $doctordatastmt = $pdo->prepare("SELECT * FROM doctors WHERE email='$email'");
+          $doctordatastmt->execute();
+          $doctordatas = $doctordatastmt->fetch(PDO::FETCH_ASSOC);
+          $doctorid = $doctordatas['id'];
+          $doctorlogstmt = $pdo->prepare("INSERT INTO doctorslog(doctor_id, email, ip, status) VALUES('$doctorid','$email', '$ip', 'Failed')");
+          $doctorlogstmt->execute();
           echo "<script>alert('Login Failed! Please Retry');</script>";
         }
       }else{
+        $doctorlogstmt = $pdo->prepare("INSERT INTO doctorslog(email, ip, status) VALUES('$email', '$ip', 'Failed')");
+        $doctorlogstmt->execute();
         echo "<script>alert('Login Failed! Please Retry');</script>";
       }
       }
 
   }
 
+  public function doctorlogout($date, $time, $id){
+    global $pdo;
+    $timestap = $date . " " .$time;
+    $doctorlogoutstmt = $pdo->prepare("UPDATE doctorslog SET logouttime=$timestap");
+    $doctorlogoutstmt->execute();
+  }
+
+  public function userlogout($date, $time){
+    global $pdo;
+    $timestap = $date . " " . $time;
+    $doctorlogoutstmt = $pdo->prepare("UPDATE userslog SET logouttime='$timestap' ORDER BY id DESC LIMIT 1");
+    $doctorlogoutstmt->execute();
+  }
+
   public function selectall($table)
   {
     global $pdo;
     $stmt = $pdo->prepare("SELECT * FROM $table");
+    $stmt->execute();
+    return $stmt->fetchall();
+  }
+
+  public function selectbwdate($table, $fromdate, $todate)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM $table WHERE createDate between '$fromdate' and '$todate'");
     $stmt->execute();
     return $stmt->fetchall();
   }
@@ -165,6 +225,30 @@ class queries
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
+  public function selectpatient($table, $username)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM $table WHERE name='$username'");
+    $stmt->execute();
+    return $stmt->fetchall();
+  }
+
+  public function selectunreadmessage($table)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM $table WHERE status='1'");
+    $stmt->execute();
+    return $stmt->fetchall();
+  }
+
+  public function selectreadmessage($table)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM $table WHERE status='2'");
+    $stmt->execute();
+    return $stmt->fetchall();
+  }
+
   public function selectspecdoc($table, $id)
   {
     global $pdo;
@@ -185,6 +269,16 @@ class queries
   {
     global $pdo;
     $stmt = $pdo->prepare("UPDATE users SET username='$username', password='$password', email='$email' WHERE id=$id");
+    $stmt->execute();
+    if($stmt){
+      header('location:index.php?error=none');
+    }
+  }
+
+  public function messageremark($remark, $id)
+  {
+    global $pdo;
+    $stmt = $pdo->prepare("UPDATE contact SET remark='$remark', status='2' WHERE id=$id");
     $stmt->execute();
     if($stmt){
       header('location:index.php?error=none');

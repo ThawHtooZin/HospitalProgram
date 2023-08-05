@@ -28,7 +28,8 @@ $bootstrap = new bootstrap();
         $email = $_POST['email'];
         $password = $_POST['password'];
         $role = 1;
-        $query->login($email, $password, $role);
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $query->login($email, $password, $role, $ip);
       }
     }
     ?>
