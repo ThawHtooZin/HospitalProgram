@@ -330,6 +330,43 @@ class queries
       echo "<script>alert('Deleted the data!');window.location.href='Index.php';</script>";
     }
   }
+
+  public function userrowcount(){
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM users");
+    $stmt->execute();
+    return $stmt->fetchColumn();
+  }
+  public function doctorrowcount(){
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM doctors");
+    $stmt->execute();
+    return $stmt->fetchColumn();
+  }
+  public function appointmentrowcount(){
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM appointment");
+    $stmt->execute();
+    return $stmt->fetchColumn();
+  }
+  public function patientsrowcount(){
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM patients");
+    $stmt->execute();
+    return $stmt->fetchColumn();
+  }
+  public function queiresrowcount(){
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM contact WHERE status=1");
+    $stmt->execute();
+    return $stmt->fetchColumn();
+  }
+  public function medicalhistoryrowcount(){
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM medical_history");
+    $stmt->execute();
+    return $stmt->fetchColumn();
+  }
 }
 
 ?>
